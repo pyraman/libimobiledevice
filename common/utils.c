@@ -27,11 +27,22 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <sys/time.h>
 #include <inttypes.h>
 #include <ctype.h>
 
 #include "utils.h"
+
+#ifndef WIN32
+#include <sys/time.h>
+#else
+#include <time.h>
+
+struct timeval_t {
+	long    tv_sec;         /* seconds */
+	long    tv_usec;        /* and microseconds */
+};
+#endif // !WIN32
+
 
 #ifndef HAVE_STPCPY
 /**

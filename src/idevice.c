@@ -115,11 +115,12 @@ static thread_once_t init_once = THREAD_ONCE_INIT;
 static thread_once_t deinit_once = THREAD_ONCE_INIT;
 
 #ifdef WIN32
+#ifndef LIBIMOBILEDEVICE_STATIC
 BOOL WINAPI DllMain(HINSTANCE hModule, DWORD dwReason, LPVOID lpReserved)
 {
 	switch (dwReason) {
 	case DLL_PROCESS_ATTACH:
-		thread_once(&init_once,	internal_idevice_init);
+		thread_once(&init_once, internal_idevice_init);
 		break;
 	case DLL_PROCESS_DETACH:
 		thread_once(&deinit_once, internal_idevice_deinit);
@@ -129,6 +130,7 @@ BOOL WINAPI DllMain(HINSTANCE hModule, DWORD dwReason, LPVOID lpReserved)
 	}
 	return 1;
 }
+#endif
 #else
 static void __attribute__((constructor)) libimobiledevice_initialize(void)
 {
@@ -702,7 +704,7 @@ LIBIMOBILEDEVICE_API idevice_error_t idevice_connection_enable_ssl(idevice_conne
 		return ret;
 	}
 	BIO_set_fd(ssl_bio, (int)(long)connection->data, BIO_NOCLOSE);
-
+	SSL_library_init();
 	SSL_CTX *ssl_ctx = SSL_CTX_new(TLSv1_method());
 	if (ssl_ctx == NULL) {
 		debug_info("ERROR: Could not create SSL context.");

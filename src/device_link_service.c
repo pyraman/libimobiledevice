@@ -411,7 +411,7 @@ leave:
 	if (msg)
 		free(msg);
 	if (pmsg)
-		plist_free(pmsg);
+		//plist_free(pmsg);
 
 	return err;
 }

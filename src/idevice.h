@@ -33,6 +33,7 @@
 #include <gnutls/x509.h>
 #endif
 
+#ifndef LIBIMOBILEDEVICE_STATIC
 #ifdef WIN32
 #define LIBIMOBILEDEVICE_API __declspec( dllexport )
 #else
@@ -42,6 +43,10 @@
 #define LIBIMOBILEDEVICE_API
 #endif
 #endif
+#else
+#define LIBIMOBILEDEVICE_API
+#endif // !LIBIMOBILEDEVICE_STATIC
+
 
 #include "common/userpref.h"
 #include "libimobiledevice/libimobiledevice.h"
